@@ -25,6 +25,9 @@ describe IndexController do
       get :oauth
     end
     it { response.should be_redirect }
+    it 'session should have request_token' do
+      request.session[:request_token].should_not == nil
+    end
   end
 
   describe 'GET "callback"' do
@@ -47,6 +50,9 @@ describe IndexController do
       get :callback, oauth_token: 'oauth_token', oauth_verifier: 'oauth_verifier'
     end
     it { response.should be_redirect }
+    it 'session should have oauth_token' do
+      request.session[:oauth].should_not == nil
+    end
   end
 
 end
