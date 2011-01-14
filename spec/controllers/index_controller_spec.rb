@@ -8,7 +8,22 @@ describe IndexController do
   end
 
   describe 'GET "oauth"' do
-    before { get :oauth }
+    before do
+      consumer = stub(OAuth::Consumer)
+      request_token = stub(OAuth::RequestToken)
+
+      IndexController.stub(:consumer).and_return(consumer)
+
+      consumer.stub(:get_request_token).and_return(request_token)
+
+      request_token.stub(:token).and_return('request_token')
+      request_token.stub(:secret).and_return('request_secret')
+
+      authorize_url = 'http://twitter.com/oauth/authorize?oauth_token=oauth_token'
+      request_token.stub(:authorize_url).and_return(authorize_url)
+
+      get :oauth
+    end
     it { response.should be_redirect }
   end
 
