@@ -4,7 +4,10 @@ describe IndexController do
 
   describe 'GET "index"' do
     before { get :index }
-    it { response.should be_success }
+
+    it 'response should be success' do
+      response.should be_success
+    end
   end
 
   describe 'GET "oauth"' do
@@ -24,7 +27,11 @@ describe IndexController do
 
       get :oauth
     end
-    it { response.should be_redirect }
+
+    it 'response should be redirect' do
+      response.should be_redirect
+    end
+
     it 'session should have request_token' do
       request.session[:request_token].should_not == nil
     end
@@ -49,7 +56,11 @@ describe IndexController do
 
       get :callback, oauth_token: 'oauth_token', oauth_verifier: 'oauth_verifier'
     end
-    it { response.should be_redirect }
+
+    it 'response should be redirect' do
+      response.should be_redirect
+    end
+
     it 'session should have oauth_token' do
       request.session[:oauth].should_not == nil
     end
