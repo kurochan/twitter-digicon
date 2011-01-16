@@ -47,6 +47,36 @@ describe IndexController do
           assigns(:tweets).should == @tweets
         end
       end
+
+      context 'could not authenticate with oauth' do
+        before do
+          session[:oauth] = {
+            token: 'oauth_token',
+            secert: 'oauth_secret'
+          }
+
+          access_token = stub(OAuth::AccessToken)
+          rubytter = stub(OAuthRubytter)
+
+          OAuth::AccessToken.stub(:new).and_return(access_token)
+
+          OAuthRubytter.stub(:new).and_return(rubytter)
+
+          rubytter.stub(:friends_timeline) do
+            raise Rubytter::APIError.new 'Could not authenticate with OAuth.'
+          end
+
+          get :index
+        end
+
+        it 'response should be success' do
+          response.should be_success
+        end
+
+        it 'session should not have oauth_token' do
+          request.session[:oauth].should == nil
+        end
+      end
     end
   end
 
