@@ -10,7 +10,11 @@ class IndexController < ApplicationController
 
     rubytter = OAuthRubytter.new(access_token)
 
-    @tweets = rubytter.friends_timeline
+    begin
+      @tweets = rubytter.friends_timeline
+    rescue Rubytter::APIError
+      session.delete :oauth
+    end
   end
 
   def oauth
