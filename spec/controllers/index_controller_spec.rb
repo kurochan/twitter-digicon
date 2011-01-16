@@ -12,13 +12,22 @@ describe IndexController do
     end
 
     context 'session have oauth_token' do
+      before do
+        session[:oauth] = {
+          token: 'oauth_token',
+          secert: 'oauth_secret'
+        }
+
+        access_token = stub(OAuth::AccessToken)
+        @rubytter = stub(OAuthRubytter)
+
+        OAuth::AccessToken.stub(:new).and_return(access_token)
+
+        OAuthRubytter.stub(:new).and_return(@rubytter)
+      end
+
       context 'could authenticate with oauth' do
         before do
-          session[:oauth] = {
-            token: 'oauth_token',
-            secert: 'oauth_secret'
-          }
-
           @tweets = []
           20.times do |i|
             @tweets << {
@@ -27,14 +36,7 @@ describe IndexController do
             }
           end
 
-          access_token = stub(OAuth::AccessToken)
-          rubytter = stub(OAuthRubytter)
-
-          OAuth::AccessToken.stub(:new).and_return(access_token)
-
-          OAuthRubytter.stub(:new).and_return(rubytter)
-
-          rubytter.stub(:friends_timeline).and_return(@tweets)
+          @rubytter.stub(:friends_timeline).and_return(@tweets)
 
           get :index
         end
@@ -50,19 +52,7 @@ describe IndexController do
 
       context 'could not authenticate with oauth' do
         before do
-          session[:oauth] = {
-            token: 'oauth_token',
-            secert: 'oauth_secret'
-          }
-
-          access_token = stub(OAuth::AccessToken)
-          rubytter = stub(OAuthRubytter)
-
-          OAuth::AccessToken.stub(:new).and_return(access_token)
-
-          OAuthRubytter.stub(:new).and_return(rubytter)
-
-          rubytter.stub(:friends_timeline) do
+          @rubytter.stub(:friends_timeline) do
             raise Rubytter::APIError.new 'Could not authenticate with OAuth.'
           end
 
