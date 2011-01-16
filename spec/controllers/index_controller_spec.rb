@@ -38,6 +38,10 @@ describe IndexController do
         get :index
       end
 
+      it 'response should be success' do
+        response.should be_success
+      end
+
       it 'assigns @tweets should == rubytter.friends_timeline' do
         assigns(:tweets).should == @tweets
       end
