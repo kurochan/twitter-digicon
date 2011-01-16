@@ -3,10 +3,12 @@ require 'spec_helper'
 describe IndexController do
 
   describe 'GET "index"' do
-    before { get :index }
+    context 'session not have oauth_token' do
+      before { get :index }
 
-    it 'response should be success' do
-      response.should be_success
+      it 'response should be success' do
+        response.should be_success
+      end
     end
   end
 
