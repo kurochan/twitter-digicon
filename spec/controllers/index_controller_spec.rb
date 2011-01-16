@@ -12,38 +12,40 @@ describe IndexController do
     end
 
     context 'session have oauth_token' do
-      before do
-        session[:oauth] = {
-          token: 'oauth_token',
-          secert: 'oauth_secret'
-        }
-
-        @tweets = []
-        20.times do |i|
-          @tweets << {
-            'id' => i,
-            'text' => "test tweet #{i}"
+      context 'could authenticate with oauth' do
+        before do
+          session[:oauth] = {
+            token: 'oauth_token',
+            secert: 'oauth_secret'
           }
+
+          @tweets = []
+          20.times do |i|
+            @tweets << {
+              'id' => i,
+              'text' => "test tweet #{i}"
+            }
+          end
+
+          access_token = stub(OAuth::AccessToken)
+          rubytter = stub(OAuthRubytter)
+
+          OAuth::AccessToken.stub(:new).and_return(access_token)
+
+          OAuthRubytter.stub(:new).and_return(rubytter)
+
+          rubytter.stub(:friends_timeline).and_return(@tweets)
+
+          get :index
         end
 
-        access_token = stub(OAuth::AccessToken)
-        rubytter = stub(OAuthRubytter)
+        it 'response should be success' do
+          response.should be_success
+        end
 
-        OAuth::AccessToken.stub(:new).and_return(access_token)
-
-        OAuthRubytter.stub(:new).and_return(rubytter)
-
-        rubytter.stub(:friends_timeline).and_return(@tweets)
-
-        get :index
-      end
-
-      it 'response should be success' do
-        response.should be_success
-      end
-
-      it 'assigns @tweets should == rubytter.friends_timeline' do
-        assigns(:tweets).should == @tweets
+        it 'assigns @tweets should == rubytter.friends_timeline' do
+          assigns(:tweets).should == @tweets
+        end
       end
     end
   end
