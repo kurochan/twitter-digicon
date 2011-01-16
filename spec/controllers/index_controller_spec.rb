@@ -100,6 +100,18 @@ describe IndexController do
         request.session[:oauth].should_not == nil
       end
     end
+
+    context 'params have denied' do
+      before { get :callback, denied: 'denied_request_token' }
+
+      it 'response should be redirect' do
+        response.should be_redirect
+      end
+
+      it 'session should not have oauth_token' do
+        request.session[:oauth].should == nil
+      end
+    end
   end
 
 end
