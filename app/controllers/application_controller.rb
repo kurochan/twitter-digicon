@@ -4,9 +4,9 @@ class ApplicationController < ActionController::Base
   protected
   def self.consumer
     OAuth::Consumer.new(
-      'consumer key',
-      'consumer secret',
-      {site: "http://twitter.com"}
+      '7jU6c4oblMyhbOQ50IMAvQ',
+      'BxAttdV0Tf2l22lWdrHeDh3K1tMSr5NEgqXBe03BrA',
+      :site => "http://api.twitter.com"
     )
   end
 
