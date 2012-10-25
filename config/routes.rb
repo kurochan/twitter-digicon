@@ -8,6 +8,8 @@ Rails3Twitter::Application.routes.draw do
 
   get "/logout" => "index#logout", as: :logout
 
+  post "/update" => "index#update", as: :update
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

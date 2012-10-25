@@ -2,6 +2,14 @@
   <% form_tag :oauth, method: :get do |f| %>
     <%= submit_tag '認証する' %>
   <% end %>
+<% else %>
+  <%= form_tag :update, method: :post do %>
+    <%= text_field_tag :text %>
+    <%= submit_tag 'ツイート' %>
+  <% end %>
+  <% form_tag :logout, method: :get do |f| %>
+    <%= submit_tag 'ログアウト' %>
+  <% end %>
 <% end %>
 <div id="friends_timeline">
   <dl>

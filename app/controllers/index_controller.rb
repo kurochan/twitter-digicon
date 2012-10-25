@@ -20,6 +20,25 @@ class IndexController < ApplicationController
     end
   end
 
+  def update
+    redirect_to :index unless params[:text] || session[:oauth]
+
+    access_token = OAuth::AccessToken.new(
+      self.class.consumer,
+      session[:oauth][:token],
+      session[:oauth][:secret]
+    )
+    rubytter = OAuthRubytter.new(access_token)
+
+    begin
+      rubytter.update(params[:text] + '');
+    rescue Rubytter::APIError
+      session.delete :oauth
+    end
+    
+    redirect_to :index
+  end
+
   def oauth
     callback_url = "http://#{request.host_with_port}/callback"
     request_token = self.class.consumer.get_request_token(oauth_callback: callback_url)
