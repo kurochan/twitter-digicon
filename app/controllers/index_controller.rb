@@ -1,17 +1,20 @@
+# coding: utf-8
+
 class IndexController < ApplicationController
   def index
-    return unless session[:oauth]
-
-    access_token = OAuth::AccessToken.new(
-      self.class.consumer,
-      session[:oauth][:token],
-      session[:oauth][:secret]
-    )
-
-    rubytter = OAuthRubytter.new(access_token)
+    if session[:oauth] 
+      access_token = OAuth::AccessToken.new(
+        self.class.consumer,
+        session[:oauth][:token],
+        session[:oauth][:secret]
+      )
+      rubytter = OAuthRubytter.new(access_token)
+    else
+      rubytter = Rubytter.new
+    end
 
     begin
-      @tweets = rubytter.friends_timeline
+      @tweets = rubytter.search ('#DC概論')
     rescue Rubytter::APIError
       session.delete :oauth
     end
@@ -53,6 +56,11 @@ class IndexController < ApplicationController
 
     session.delete :request_token
 
+    redirect_to :index
+  end
+
+  def logout
+    session.delete :oauth
     redirect_to :index
   end
 

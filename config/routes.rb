@@ -6,6 +6,8 @@ Rails3Twitter::Application.routes.draw do
 
   get "/callback" => "index#callback", as: :callback
 
+  get "/logout" => "index#logout", as: :logout
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
