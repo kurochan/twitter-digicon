@@ -1,6 +1,6 @@
 <% unless session[:oauth] %>
   <% form_tag :oauth, method: :get do |f| %>
-    <%= submit_tag '認証する' %>
+    <%= submit_tag '認証してツイート' %>
   <% end %>
 <% else %>
   <%= form_tag :update, method: :post do %>

@@ -31,7 +31,7 @@ class IndexController < ApplicationController
     rubytter = OAuthRubytter.new(access_token)
 
     begin
-      rubytter.update(params[:text] + '');
+      rubytter.update(params[:text] + ' #DC概論');
     rescue Rubytter::APIError
       session.delete :oauth
     end
