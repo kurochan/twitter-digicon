@@ -4,8 +4,8 @@ The Twitter Mashup Application Sample Made by Ruby on Rails 3.0.3
 
 == Installation
 
-$ git clone git://github.com/mitukiii/rails3-twitter.git
-$ cd rails3-twitter
+$ git clone git://github.com/kurochan/twitter-digicon.git
+$ cd twitter-digicon.git
 $ bundle install
 
 Rewirte consumer key and consumer secret in app/controllers/application_controller.rb
